@@ -137,6 +137,47 @@ El seeder crea automáticamente 3 usuarios con diferentes roles:
 | manager@example.com | password | Manager | create, read, update products |
 | user@example.com | password | User | read products |
 
+## 📘 Documentación Interactiva con Swagger/OpenAPI
+
+La API incluye documentación interactiva completa con Swagger UI que te permite explorar y probar todos los endpoints directamente desde tu navegador.
+
+### Acceder a Swagger UI
+
+Una vez que el servidor esté ejecutándose, accede a:
+
+```
+http://localhost:8000/api/documentation
+```
+
+### Características de Swagger UI
+
+- ✅ **Interfaz interactiva** - Prueba todos los endpoints sin herramientas externas
+- ✅ **Documentación completa** - Esquemas detallados de request/response
+- ✅ **Autenticación integrada** - Sistema de autorización Bearer token
+- ✅ **Ejemplos en vivo** - Ejemplos de uso para cada endpoint
+- ✅ **Validación en tiempo real** - Ve los errores de validación al instante
+- ✅ **Organización por tags** - Endpoints agrupados por funcionalidad
+
+### Inicio Rápido con Swagger
+
+1. **Accede a Swagger UI**: `http://localhost:8000/api/documentation`
+2. **Haz login**: Usa el endpoint `POST /login` con credenciales de prueba
+3. **Copia el token**: Del campo `access_token` en la respuesta
+4. **Autoriza**: Haz clic en el botón "Authorize" 🔓 e ingresa `Bearer TU_TOKEN`
+5. **Prueba endpoints**: Ahora puedes probar cualquier endpoint protegido
+
+### Manual Completo
+
+Para una guía detallada paso a paso, consulta el [Manual de Usuario de la API](docs/API_MANUAL.md).
+
+### Regenerar Documentación
+
+Si realizas cambios en los controladores, regenera la documentación:
+
+```bash
+php artisan l5-swagger:generate
+```
+
 ## 📚 Documentación de la API
 
 ### Base URL
