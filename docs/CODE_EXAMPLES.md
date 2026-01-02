@@ -7,6 +7,7 @@ Este documento contiene ejemplos completos de cómo consumir la API REST de Lara
 - [cURL (Línea de Comandos)](#curl-línea-de-comandos)
 - [JavaScript (Fetch API)](#javascript-fetch-api)
 - [Python (Requests)](#python-requests)
+- [PHP (Guzzle HTTP Client)](#php-guzzle-http-client)
 - [Flujos Completos](#flujos-completos)
 
 ---
@@ -499,6 +500,325 @@ def logout(self) -> Dict[str, Any]:
 
 # Uso
 api.logout()
+```
+
+---
+
+## PHP (Guzzle HTTP Client)
+
+### Instalación
+
+```bash
+composer require guzzlehttp/guzzle
+```
+
+### Configuración Base
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+
+class LaravelAPIClient
+{
+    private $client;
+    private $token = null;
+    
+    public function __construct($baseUrl = 'http://localhost:8000/api/v1')
+    {
+        $this->client = new Client([
+            'base_uri' => $baseUrl,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+        ]);
+    }
+    
+    private function request($method, $endpoint, $options = [])
+    {
+        if ($this->token && !isset($options['skip_auth'])) {
+            $options['headers']['Authorization'] = 'Bearer ' . $this->token;
+        }
+        
+        unset($options['skip_auth']);
+        
+        try {
+            $response = $this->client->request($method, $endpoint, $options);
+            return json_decode($response->getBody(), true);
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $error = json_decode($e->getResponse()->getBody(), true);
+                throw new Exception($error['message'] ?? 'Request failed');
+            }
+            throw $e;
+        }
+    }
+}
+```
+
+### Registro de Usuario
+
+```php
+public function register($name, $email, $password)
+{
+    $data = $this->request('POST', '/register', [
+        'skip_auth' => true,
+        'json' => [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ],
+    ]);
+    
+    $this->token = $data['access_token'];
+    echo "Registered successfully: {$data['user']['email']}\n";
+    return $data;
+}
+
+// Uso
+$api = new LaravelAPIClient();
+$api->register('John Doe', 'john@example.com', 'password123');
+```
+
+### Login
+
+```php
+public function login($email, $password)
+{
+    $data = $this->request('POST', '/login', [
+        'skip_auth' => true,
+        'json' => [
+            'email' => $email,
+            'password' => $password,
+        ],
+    ]);
+    
+    $this->token = $data['access_token'];
+    echo "Logged in as: {$data['user']['name']}\n";
+    return $data;
+}
+
+// Uso
+$api = new LaravelAPIClient();
+$api->login('admin@example.com', 'password');
+```
+
+### Obtener Usuario Actual
+
+```php
+public function me()
+{
+    $data = $this->request('GET', '/me');
+    $user = $data['user'];
+    echo "Current user: {$user['name']} ({$user['email']})\n";
+    
+    $roles = array_map(fn($role) => $role['name'], $user['roles']);
+    echo "Roles: " . implode(', ', $roles) . "\n";
+    
+    return $user;
+}
+
+// Uso
+$user = $api->me();
+```
+
+### Listar Productos
+
+```php
+public function getProducts($page = 1, $category = null)
+{
+    $query = ['page' => $page];
+    if ($category) {
+        $query['category'] = $category;
+    }
+    
+    $data = $this->request('GET', '/products', ['query' => $query]);
+    
+    echo "Found {$data['meta']['total']} products\n";
+    echo "Page {$data['meta']['current_page']} of {$data['meta']['last_page']}\n";
+    
+    return $data;
+}
+
+// Uso
+$products = $api->getProducts(1, 'Electronics');
+foreach ($products['data'] as $product) {
+    echo "- {$product['name']}: \${$product['price']}\n";
+}
+```
+
+### Obtener Producto
+
+```php
+public function getProduct($id)
+{
+    $data = $this->request('GET', "/products/{$id}");
+    echo "Product: {$data['name']} - \${$data['price']}\n";
+    return $data;
+}
+
+// Uso
+$product = $api->getProduct(1);
+```
+
+### Crear Producto
+
+```php
+public function createProduct($name, $price, $stock, $description = '', $category = '')
+{
+    $data = $this->request('POST', '/products', [
+        'json' => [
+            'name' => $name,
+            'description' => $description,
+            'price' => $price,
+            'stock' => $stock,
+            'category' => $category,
+        ],
+    ]);
+    
+    echo "Product created: {$data['name']} (ID: {$data['id']})\n";
+    return $data;
+}
+
+// Uso
+$product = $api->createProduct(
+    'Laptop Pro 15',
+    1299.99,
+    25,
+    'High-performance laptop',
+    'Electronics'
+);
+```
+
+### Actualizar Producto
+
+```php
+public function updateProduct($id, $updates)
+{
+    $data = $this->request('PUT', "/products/{$id}", [
+        'json' => $updates,
+    ]);
+    
+    echo "Product updated: {$data['name']}\n";
+    return $data;
+}
+
+// Uso
+$updated = $api->updateProduct(1, [
+    'name' => 'Laptop Pro 15 Updated',
+    'price' => 1199.99,
+]);
+```
+
+### Eliminar Producto
+
+```php
+public function deleteProduct($id)
+{
+    $data = $this->request('DELETE', "/products/{$id}");
+    echo "Product deleted: {$data['message']}\n";
+    return $data;
+}
+
+// Uso
+$api->deleteProduct(1);
+```
+
+### Logout
+
+```php
+public function logout()
+{
+    $data = $this->request('POST', '/logout');
+    $this->token = null;
+    echo "Logged out successfully\n";
+    return $data;
+}
+
+// Uso
+$api->logout();
+```
+
+### Flujo Completo CRUD (PHP)
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+// Incluir la clase LaravelAPIClient aquí
+
+try {
+    $api = new LaravelAPIClient();
+    
+    // 1. Login
+    echo "=== Login ===\n";
+    $api->login('admin@example.com', 'password');
+    
+    // 2. Listar productos
+    echo "\n=== Productos Existentes ===\n";
+    $products = $api->getProducts();
+    
+    // 3. Crear producto
+    echo "\n=== Creando Producto ===\n";
+    $newProduct = $api->createProduct(
+        'Test Product',
+        99.99,
+        100,
+        'Product for testing',
+        'Test'
+    );
+    $productId = $newProduct['id'];
+    
+    // 4. Leer producto
+    echo "\n=== Leyendo Producto ===\n";
+    $product = $api->getProduct($productId);
+    
+    // 5. Actualizar producto
+    echo "\n=== Actualizando Producto ===\n";
+    $api->updateProduct($productId, [
+        'name' => 'Updated Test Product',
+        'price' => 149.99,
+    ]);
+    
+    // 6. Eliminar producto
+    echo "\n=== Eliminando Producto ===\n";
+    $api->deleteProduct($productId);
+    
+    // 7. Logout
+    echo "\n=== Logout ===\n";
+    $api->logout();
+    
+    echo "\n✅ CRUD completo exitoso!\n";
+    
+} catch (Exception $e) {
+    echo "❌ Error: {$e->getMessage()}\n";
+}
+```
+
+### Manejo de Errores (PHP)
+
+```php
+try {
+    $api->createProduct('Invalid', 0, 0); // Falta datos válidos
+} catch (Exception $e) {
+    $message = $e->getMessage();
+    
+    if (strpos($message, 'validation') !== false) {
+        echo "Validation errors occurred\n";
+    } elseif (strpos($message, 'permission') !== false) {
+        echo "Permission denied\n";
+    } elseif (strpos($message, 'Unauthenticated') !== false) {
+        echo "Please login first\n";
+    } else {
+        echo "Error: {$message}\n";
+    }
+}
 ```
 
 ---

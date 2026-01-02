@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,19 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Public routes
+// API Version 1
 Route::prefix('v1')->group(function () {
-    // Authentication routes
+    // Public routes
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+
+    // Protected routes (require authentication)
+    Route::middleware('auth:sanctum')->group(function () {
+        // Auth routes
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
+
+        // Products routes
+        Route::apiResource('products', ProductController::class);
+    });
 });
 
-// Protected routes (require authentication)
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    // Auth routes
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
-
-    // Products routes
-    Route::apiResource('products', ProductController::class);
-});

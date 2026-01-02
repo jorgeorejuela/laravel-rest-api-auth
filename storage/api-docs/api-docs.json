@@ -30,7 +30,7 @@
                 ],
                 "summary": "Registrar un nuevo usuario",
                 "description": "Crea una nueva cuenta de usuario y retorna un token de autenticación. El usuario se crea con el rol 'User' por defecto.",
-                "operationId": "5d4fa5d5607ed675ba93907e1fc94534",
+                "operationId": "e6d1fcf1feab4f92eacb72353c6dfbcd",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -104,7 +104,7 @@
                 ],
                 "summary": "Iniciar sesión",
                 "description": "Autentica un usuario y retorna un token de acceso. Los tokens antiguos se revocan automáticamente.",
-                "operationId": "67d6d0fdd54fba132e1b6f55ca254183",
+                "operationId": "72bf786ad8ff53c7391309c836350a8d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -174,7 +174,7 @@
                 ],
                 "summary": "Obtener información del usuario autenticado",
                 "description": "Retorna la información completa del usuario autenticado, incluyendo roles y permisos.",
-                "operationId": "bc2032a379aa97707ccc61511897c120",
+                "operationId": "0fadd24761c66bfa1bfdc46dea94c0dd",
                 "responses": {
                     "200": {
                         "description": "Información del usuario",
@@ -216,7 +216,7 @@
                 ],
                 "summary": "Cerrar sesión",
                 "description": "Revoca el token de autenticación actual del usuario.",
-                "operationId": "28d48c13fca984400ac8de99f54ee13a",
+                "operationId": "5660f1ae61b95f0283dfc205d5ffdad5",
                 "responses": {
                     "200": {
                         "description": "Sesión cerrada exitosamente",
@@ -253,7 +253,7 @@
                 ],
                 "summary": "Listar productos",
                 "description": "Obtiene una lista paginada de productos. Permite filtrar por categoría.",
-                "operationId": "080f057905dc32d2f11065d606dc4cd6",
+                "operationId": "c821c7f9e41e08594ad4eae5a99e812e",
                 "parameters": [
                     {
                         "name": "category",
@@ -324,7 +324,7 @@
                 ],
                 "summary": "Crear un nuevo producto",
                 "description": "Crea un nuevo producto. Requiere el permiso 'create-products'.",
-                "operationId": "eddf8c7847239ddc1040daadd814e21b",
+                "operationId": "a59d7d76c37cb085c473698dba983938",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -424,7 +424,7 @@
                 ],
                 "summary": "Ver detalles de un producto",
                 "description": "Obtiene los detalles completos de un producto específico.",
-                "operationId": "b5099368868dbe7900acd129345eb148",
+                "operationId": "900da7e5cb549dc28cfd19d90d1f6710",
                 "parameters": [
                     {
                         "name": "id",
@@ -481,7 +481,7 @@
                 ],
                 "summary": "Actualizar un producto",
                 "description": "Actualiza los datos de un producto existente. Requiere el permiso 'update-products'.",
-                "operationId": "2ce632b9d1c0c445557821d09add7ec2",
+                "operationId": "1ab61d88b4cfff271ad6afe7d8cf0388",
                 "parameters": [
                     {
                         "name": "id",
@@ -586,7 +586,7 @@
                 ],
                 "summary": "Eliminar un producto",
                 "description": "Elimina un producto (soft delete). Requiere el permiso 'delete-products'.",
-                "operationId": "76bb7dc4ab3fc3233d5b33ef58e95d7d",
+                "operationId": "9dcbacba304004f42c516998d50fe6fa",
                 "parameters": [
                     {
                         "name": "id",
