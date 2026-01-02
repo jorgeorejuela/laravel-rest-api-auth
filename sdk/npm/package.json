@@ -1,0 +1,35 @@
+{
+    "name": "@laravel-api/client",
+    "version": "1.0.0",
+    "description": "Official JavaScript/TypeScript client for Laravel REST API with Sanctum authentication",
+    "main": "src/index.js",
+    "types": "src/index.d.ts",
+    "scripts": {
+        "test": "echo \"No tests specified yet\"",
+        "prepublishOnly": "echo \"Ready to publish\""
+    },
+    "keywords": [
+        "laravel",
+        "api",
+        "client",
+        "rest",
+        "sanctum",
+        "authentication",
+        "typescript"
+    ],
+    "author": "Laravel API Team",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourusername/laravel-api-client"
+    },
+    "bugs": {
+        "url": "https://github.com/yourusername/laravel-api-client/issues"
+    },
+    "homepage": "https://github.com/yourusername/laravel-api-client#readme",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
