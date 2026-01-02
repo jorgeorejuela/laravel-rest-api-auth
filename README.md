@@ -178,6 +178,87 @@ Si realizas cambios en los controladores, regenera la documentación:
 php artisan l5-swagger:generate
 ```
 
+## 📦 Colección de Postman
+
+La API incluye una colección completa de Postman con todos los endpoints, scripts de autenticación automática y tests de validación.
+
+### Importar Colección
+
+1. **Abrir Postman**
+2. **Importar archivos**:
+   - Colección: `postman/Laravel-API.postman_collection.json`
+   - Environment: `postman/Laravel-API.postman_environment.json`
+3. **Seleccionar el environment** "Laravel API - Local"
+4. **¡Listo para usar!**
+
+### Características
+
+- ✅ **9 endpoints completos** - Todos los endpoints de la API
+- ✅ **Autenticación automática** - Pre-request script que hace login automáticamente
+- ✅ **Tests incluidos** - Validación automática de respuestas
+- ✅ **Variables de entorno** - Configuración para todos los usuarios de prueba
+- ✅ **Ejemplos de respuesta** - Documentación inline
+- ✅ **Organización por carpetas** - Authentication y Products
+
+### Uso Rápido
+
+1. Ejecuta cualquier request - el script hará login automáticamente si no hay token
+2. Los tests validarán las respuestas automáticamente
+3. El token se guarda en variables de entorno para requests subsecuentes
+
+### Variables Disponibles
+
+- `base_url`: URL base de la API
+- `token`: Token de autenticación (se actualiza automáticamente)
+- `admin_email` / `admin_password`: Credenciales de admin
+- `manager_email` / `manager_password`: Credenciales de manager
+- `user_email` / `user_password`: Credenciales de usuario
+- `product_id`: ID de producto para testing
+
+## 💻 Ejemplos de Código
+
+La API incluye ejemplos completos en múltiples lenguajes de programación.
+
+### Lenguajes Disponibles
+
+- **cURL** - Línea de comandos
+- **JavaScript** - Fetch API con funciones helper
+- **Python** - Requests con clase wrapper
+
+### Ejemplos Incluidos
+
+Para cada lenguaje encontrarás:
+- ✅ Configuración base y helpers
+- ✅ Todos los endpoints (9 endpoints)
+- ✅ Manejo de autenticación
+- ✅ Manejo de errores
+- ✅ Flujos completos (CRUD, permisos, etc.)
+
+### Acceder a los Ejemplos
+
+Consulta la documentación completa: [CODE_EXAMPLES.md](docs/CODE_EXAMPLES.md)
+
+### Ejemplo Rápido (JavaScript)
+
+```javascript
+// Login
+const response = await fetch('http://localhost:8000/api/v1/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'admin@example.com',
+    password: 'password'
+  })
+});
+
+const { access_token } = await response.json();
+
+// Usar token
+const products = await fetch('http://localhost:8000/api/v1/products', {
+  headers: { 'Authorization': `Bearer ${access_token}` }
+});
+```
+
 ## 📚 Documentación de la API
 
 ### Base URL
