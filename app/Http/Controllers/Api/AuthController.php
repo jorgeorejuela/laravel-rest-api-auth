@@ -34,44 +34,12 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=201,
      *         description="Usuario registrado exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="User registered successfully"),
-     *             @OA\Property(
-     *                 property="user",
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="John Doe"),
-     *                 @OA\Property(property="email", type="string", example="john@example.com"),
-     *                 @OA\Property(property="is_active", type="boolean", example=true),
-     *                 @OA\Property(
-     *                     property="roles",
-     *                     type="array",
-     *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=3),
-     *                         @OA\Property(property="name", type="string", example="User"),
-     *                         @OA\Property(property="slug", type="string", example="user")
-     *                     )
-     *                 )
-     *             ),
-     *             @OA\Property(property="access_token", type="string", example="1|abc123xyz789..."),
-     *             @OA\Property(property="token_type", type="string", example="Bearer")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/AuthResponse")
      *     ),
      *     @OA\Response(
      *         response=422,
      *         description="Error de validación",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="The email has already been taken."),
-     *             @OA\Property(
-     *                 property="errors",
-     *                 type="object",
-     *                 @OA\Property(
-     *                     property="email",
-     *                     type="array",
-     *                     @OA\Items(type="string", example="The email has already been taken.")
-     *                 )
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ValidationError")
      *     )
      * )
      */
@@ -116,42 +84,17 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Login exitoso",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Login successful"),
-     *             @OA\Property(
-     *                 property="user",
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Admin User"),
-     *                 @OA\Property(property="email", type="string", example="admin@example.com"),
-     *                 @OA\Property(property="is_active", type="boolean", example=true)
-     *             ),
-     *             @OA\Property(property="access_token", type="string", example="2|xyz789abc456..."),
-     *             @OA\Property(property="token_type", type="string", example="Bearer")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/AuthResponse")
      *     ),
      *     @OA\Response(
      *         response=422,
      *         description="Credenciales incorrectas",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="The provided credentials are incorrect."),
-     *             @OA\Property(
-     *                 property="errors",
-     *                 type="object",
-     *                 @OA\Property(
-     *                     property="email",
-     *                     type="array",
-     *                     @OA\Items(type="string", example="The provided credentials are incorrect.")
-     *                 )
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ValidationError")
      *     ),
      *     @OA\Response(
      *         response=403,
      *         description="Cuenta desactivada",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Your account has been deactivated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
@@ -197,40 +140,13 @@ class AuthController extends Controller
      *         response=200,
      *         description="Información del usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 property="user",
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Admin User"),
-     *                 @OA\Property(property="email", type="string", example="admin@example.com"),
-     *                 @OA\Property(property="is_active", type="boolean", example=true),
-     *                 @OA\Property(
-     *                     property="roles",
-     *                     type="array",
-     *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
-     *                         @OA\Property(property="name", type="string", example="Admin"),
-     *                         @OA\Property(property="slug", type="string", example="admin"),
-     *                         @OA\Property(
-     *                             property="permissions",
-     *                             type="array",
-     *                             @OA\Items(
-     *                                 @OA\Property(property="id", type="integer", example=1),
-     *                                 @OA\Property(property="name", type="string", example="Create Products"),
-     *                                 @OA\Property(property="slug", type="string", example="create-products")
-     *                             )
-     *                         )
-     *                     )
-     *                 )
-     *             )
+     *             @OA\Property(property="user", ref="#/components/schemas/User")
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
@@ -253,16 +169,12 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Sesión cerrada exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Logged out successfully")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */

@@ -41,34 +41,16 @@ class ProductController extends Controller
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
-     *                 @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name", type="string", example="Laptop Pro 15"),
-     *                     @OA\Property(property="description", type="string", example="High-performance laptop..."),
-     *                     @OA\Property(property="price", type="string", example="1299.99"),
-     *                     @OA\Property(property="stock", type="integer", example=25),
-     *                     @OA\Property(property="category", type="string", example="Electronics"),
-     *                     @OA\Property(
-     *                         property="created_by",
-     *                         type="object",
-     *                         @OA\Property(property="id", type="integer", example=1),
-     *                         @OA\Property(property="name", type="string", example="Admin User"),
-     *                         @OA\Property(property="email", type="string", example="admin@example.com")
-     *                     ),
-     *                     @OA\Property(property="created_at", type="string", format="date-time", example="2025-12-30 22:10:45"),
-     *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-12-30 22:10:45")
-     *                 )
+     *                 @OA\Items(ref="#/components/schemas/Product")
      *             ),
-     *             @OA\Property(property="links", type="object"),
-     *             @OA\Property(property="meta", type="object")
+     *             @OA\Property(property="links", ref="#/components/schemas/PaginationLinks"),
+     *             @OA\Property(property="meta", ref="#/components/schemas/PaginationMeta")
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
@@ -107,36 +89,22 @@ class ProductController extends Controller
      *     @OA\Response(
      *         response=201,
      *         description="Producto creado exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=10),
-     *             @OA\Property(property="name", type="string", example="New Product"),
-     *             @OA\Property(property="description", type="string", example="Product description"),
-     *             @OA\Property(property="price", type="string", example="99.99"),
-     *             @OA\Property(property="stock", type="integer", example=100),
-     *             @OA\Property(property="category", type="string", example="Electronics")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=403,
      *         description="Sin permisos",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="You do not have permission to create products.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=422,
      *         description="Error de validación",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="The name field is required."),
-     *             @OA\Property(property="errors", type="object")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ValidationError")
      *     )
      * )
      */
@@ -169,35 +137,17 @@ class ProductController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Detalles del producto",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Laptop Pro 15"),
-     *             @OA\Property(property="description", type="string", example="High-performance laptop..."),
-     *             @OA\Property(property="price", type="string", example="1299.99"),
-     *             @OA\Property(property="stock", type="integer", example=25),
-     *             @OA\Property(property="category", type="string", example="Electronics"),
-     *             @OA\Property(
-     *                 property="created_by",
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Admin User"),
-     *                 @OA\Property(property="email", type="string", example="admin@example.com")
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Producto no encontrado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Product not found.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
@@ -235,32 +185,22 @@ class ProductController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Producto actualizado exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Updated Product Name"),
-     *             @OA\Property(property="price", type="string", example="149.99")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=403,
      *         description="Sin permisos",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="You do not have permission to update products.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Producto no encontrado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Product not found.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
@@ -290,30 +230,22 @@ class ProductController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Producto eliminado exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Product deleted successfully")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="No autenticado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=403,
      *         description="Sin permisos",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="You do not have permission to delete products.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
      *     @OA\Response(
      *         response=404,
      *         description="Producto no encontrado",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Product not found.")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
      */
